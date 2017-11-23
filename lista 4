@@ -1,0 +1,23 @@
+create schema lista4;
+
+USE lista4;
+
+CREATE TABLE IF NOT EXISTS dados_multimidia(
+codigo INT (30) not null,
+nome varchar (30),
+tipo varchar (20),
+dados longblob,
+primary key(codigo)
+);
+
+insert into dados_multimidia (codigo, nome, tipo, dados) values
+('1','microsoft1','imagen jpg', load_file("C:\Users\Henrique\Pictures\Microsoft\microsoft1.jpg")),
+('2','microsoft2','imagen jpg', load_file("C:\Users\Henrique\Pictures\Microsoft\microsoft2.jpg")),
+('3','microsoft3','imagen jpg', load_file("C:\Users\Henrique\Pictures\Microsoft\microsoft3.jpg")),
+('4','microsoft4','imagen PNG', load_file("C:\Users\Henrique\Pictures\Microsoft\microsoft4.png"));
+
+select*from dados_multimidia;
+
+select dados into outfile 'C:\Users\Henrique\Pictures\Microsoft\microsoft1.jpg'
+from dados_multimidia
+where codigo = 1;
