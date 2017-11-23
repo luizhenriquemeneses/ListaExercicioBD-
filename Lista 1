@@ -1,0 +1,107 @@
+# Listas-de-BD
+/*LISTA 1 BANCO DE DADOS*/
+/*1*/
+Create schema BANCO;
+USE BANCO;
+/*2*/
+Create table Banco (
+Codigo int (30),
+Nome text (50),
+Primary key (Codigo) 
+);
+
+Create table Agencia(
+Cod_banco int (30),
+Numero_agencia int (30),
+Endereco varchar (50),
+Primary key (Numero_agencia),
+Foreign key (Cod_banco) References Banco 
+);
+
+Create table Cliente
+(
+Cpf varchar (15),
+Nome varchar (50),
+Sexo char (1),
+Endereco varchar (50),
+Primary key (Cpf)
+);
+
+Create table Conta
+(
+Numero_conta int (30),
+Saldo decimal (10,2),
+Tipo_Conta int (5),
+Num_agencia int (30),
+Primary key (Numero_conta),
+Foreign key (Num_agencia) References Agencia
+);
+
+Create table Historico
+(
+Cpf_cliente varchar (15),
+Num_conta int(30),
+Data_inicio date,
+Primary key (Data_inicio),
+Foreign key (Cpf_cliente) references Cliente,
+Foreign key (Num_conta) references Conta
+);
+
+Create table Telefone_Cliente(
+Telefone varchar (30),
+Cpf_cli varchar (15),
+Primary key (Telefone),
+Foreign key (Cpf_cli) references Cliente 
+);
+/*3*/
+Insert into Banco values ('1','Banco do Brasil');
+Insert into Banco values ('4','CEF');
+
+
+Insert into Agencia values ('0562','4','Rua Joaquim Teixeira Alves,1555');
+Insert into Agencia values ('3153','1','Av.Marcelino Pires,1960');
+
+Insert into Cliente values ( '111.222.333-44','Jennifer B Souza','F', 'Rua Cuibá,1050');
+Insert into Cliente values ( '666.777.888-99','Caetano K Lima','M', 'Rua Ivinhema,879');
+Insert into Cliente values ( '555.444.777-33','Silvia Macedo','F', 'Rua Estados Unidos,735');
+
+Insert into Conta values ('863402','763','2','3153');
+Insert into Conta values ('235847','3879','2','0562');
+
+Insert into Historico values ( '111.222.333-44','235847','1997-12-17');
+Insert into Historico values ( '666.777.888-99','235847','1997-12-18');
+Insert into Historico values ( '555.444.777-33','863402','2010-11-29');
+
+Insert into Telefone_Cliente values ('(67)34227788','111.222.333-44');
+Insert into Telefone_Cliente values ('(67)34229900','666.777.888-99');
+Insert into Telefone_Cliente values ('(67)81218833','666.777.888-99');
+/*4*/
+Alter Table Cliente add column Email varchar (50);
+/*5*/
+Select Cpf,Endereco
+From Cliente
+Where Nome='Paulo A Lima';
+/*6*/
+Select Numero_agencia, Endereco
+From Agencia as A JOIN Banco as B on B.Codigo=A.Cod_banco
+Where B.Nome= 'Banco do Brasil';
+/*7*/
+Select 	C.Numero_conta,A.Numero_agencia,CL.Nome
+From  cliente as CL, conta as C JOIN agencia as A ON C.Num_agencia=A.Numero_agencia;
+/*8*/
+Select*From Cliente 
+Where Sexo='M';
+/*9*/
+Select*from Agencia as A JOIN Banco as B ON A.Cod_banco = B.Codigo
+Where A.Numero_agencia='0562';
+/*10*/
+Delete from Conta where Numero_conta='86340-2';
+/*11*/
+Update Agencia Set Numero_agencia='6342' where Numero_agencia='0562';
+/*12*/
+Update Cliente Set Email= 'Caetanolima@gmail.com'
+Where Nome = 'Caetano K Lima';
+/*13*/
+Select numero_conta, saldo * 1.1 as 'Novo Saldo'
+From conta
+Where numero_conta='23584-7';
